@@ -7,9 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var jokeAdapter: JokeAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Инициализация RecyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        jokeAdapter = JokeAdapter()
+        recyclerView.adapter = jokeAdapter
 
         // Список статичных шуток
         val jokes = listOf(
@@ -22,9 +31,7 @@ class MainActivity : AppCompatActivity() {
             Joke("Sports", "Why are basketball players such messy eaters?", "They are always dribbling!")
         )
 
-        // Инициализация RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = JokeAdapter(jokes)
+        // Обновление списка шуток через DiffUtil
+        jokeAdapter.submitList(jokes)
     }
 }
