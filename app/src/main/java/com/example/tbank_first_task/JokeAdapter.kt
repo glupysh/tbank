@@ -1,5 +1,6 @@
 package com.example.tbank_first_task
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +23,21 @@ class JokeAdapter : ListAdapter<Joke, JokeAdapter.JokeViewHolder>(JokeDiffCallba
     }
 
     override fun onBindViewHolder(holder: JokeViewHolder, position: Int) {
-        val joke = getItem(position) // используем getItem вместо прямого доступа
+        val joke = getItem(position)
         holder.categoryTextView.text = joke.category
         holder.questionTextView.text = joke.question
         holder.answerTextView.text = joke.answer
+
+        // Устанавливаем слушатель клика
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                putExtra("CATEGORY", joke.category)
+                putExtra("QUESTION", joke.question)
+                putExtra("ANSWER", joke.answer)
+            }
+            context.startActivity(intent)
+        }
     }
 }
 
