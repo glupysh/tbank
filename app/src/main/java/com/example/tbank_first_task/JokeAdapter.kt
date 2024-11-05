@@ -28,7 +28,6 @@ class JokeAdapter : ListAdapter<Joke, JokeAdapter.JokeViewHolder>(JokeDiffCallba
         holder.questionTextView.text = joke.question
         holder.answerTextView.text = joke.answer
 
-        // Устанавливаем слушатель клика
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, DetailActivity::class.java).apply {
@@ -43,7 +42,7 @@ class JokeAdapter : ListAdapter<Joke, JokeAdapter.JokeViewHolder>(JokeDiffCallba
 
 class JokeDiffCallback : DiffUtil.ItemCallback<Joke>() {
     override fun areItemsTheSame(oldItem: Joke, newItem: Joke): Boolean {
-        return oldItem.question == newItem.question // Предполагаем, что вопрос уникален
+        return oldItem.question == newItem.question
     }
 
     override fun areContentsTheSame(oldItem: Joke, newItem: Joke): Boolean {

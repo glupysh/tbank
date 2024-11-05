@@ -2,36 +2,27 @@ package com.example.tbank_first_task
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.tbank_first_task.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var jokeAdapter: JokeAdapter
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        // Инициализация RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         jokeAdapter = JokeAdapter()
-        recyclerView.adapter = jokeAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = jokeAdapter
 
-        // Список статичных шуток
-        val jokes = listOf(
-            Joke("Christmas", "What does Santa suffer from if he gets stuck in a chimney?", "Claustrophobia!"),
-            Joke("Animals", "Why don't elephants use computers?", "Because they are afraid of the mouse!"),
-            Joke("Science", "Why did the physics teacher break up with the biology teacher?", "There was no chemistry!"),
-            Joke("Math", "Why is six afraid of seven?", "Because seven eight nine!"),
-            Joke("Food", "Why don't eggs tell jokes?", "Because they'd crack up!"),
-            Joke("Tech", "Why do programmers prefer dark mode?", "Because the light attracts bugs!"),
-            Joke("Sports", "Why are basketball players such messy eaters?", "They are always dribbling!")
-        )
-
-        // Обновление списка шуток через DiffUtil
-        jokeAdapter.submitList(jokes)
+        viewModel.jokes.observe(this) { jokes ->
+            jokeAdapter.submitList(jokes)
+        }
     }
 }
